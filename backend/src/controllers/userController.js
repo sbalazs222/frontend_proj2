@@ -6,6 +6,8 @@ import { successResponse, errorResponse } from '../utils/response.js';
 export async function getUserProfile(req, res, next) {
     const conn = await pool.getConnection();
     const userId = req.user.id;
+
+    // Retrieve user profile from the database
     try {
         const [rows] = await conn.query(
             'SELECT username, email, address, phone FROM users WHERE id = ?',
@@ -26,6 +28,7 @@ export async function updateUserProfile(req, res, next) {
     const userId = req.user.id;
     const { username, email, address, phone } = req.body;
     
+    // Validate user profile details
     if (!validate('username', username)) {
         return errorResponse(res, 400, 'Invalid username format');
     }
@@ -35,8 +38,10 @@ export async function updateUserProfile(req, res, next) {
     if (!validate('phone', phone)) {
         return errorResponse(res, 400, 'Invalid phone format');
     }
+
     const conn = await pool.getConnection();
     try {
+        // Check if email or username already exists for other users
         const [existingUser] = await conn.query(
             'SELECT id FROM users WHERE (email = ? OR username = ?) AND id != ?',
             [email, username, userId]
@@ -45,6 +50,7 @@ export async function updateUserProfile(req, res, next) {
             return errorResponse(res, 409, 'Email or username already exists');
         }
         
+        // Update user profile in the database
         const [result] = await conn.query(
             'UPDATE users SET username = ?, email = ?, address = ?, phone = ? WHERE id = ?',
             [username, email, address, phone, userId]
@@ -63,11 +69,15 @@ export async function updateUserProfile(req, res, next) {
 export async function changeUserPassword(req, res, next) {
     const userId = req.user.id;
     const { currentPassword, newPassword } = req.body;
+
+    // Validate new password
     if (!validate('password', newPassword)) {
         return errorResponse(res, 400, 'New password must contain lower-upper case letters, number, symbol and it must be 8 characters long');
     }
+
     const conn = await pool.getConnection();
     try {
+        // Retrieve current hashed password from the database
         const [rows] = await conn.query(
             'SELECT password FROM users WHERE id = ?',
             [userId]
@@ -75,9 +85,13 @@ export async function changeUserPassword(req, res, next) {
         if (rows.length === 0) {
             return errorResponse(res, 404, 'User not found');
         }
+
+        // Verify current password
         if (!await argon.verify(rows[0].password, currentPassword)) {
             return errorResponse(res, 401, 'Current password is incorrect');
         }
+
+        // Hash new password and update in the database
         const hashedNewPass = await argon.hash(newPassword);
         await conn.query(
             'UPDATE users SET password = ? WHERE id = ?',
@@ -94,6 +108,8 @@ export async function changeUserPassword(req, res, next) {
 export async function deleteUserAccount(req, res, next) {
     const conn = await pool.getConnection();
     const userId = req.user.id;
+
+    // Delete user account from the database
     try {
         const [result] = await conn.query(
             'DELETE FROM users WHERE id = ?',
