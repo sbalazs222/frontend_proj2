@@ -47,10 +47,49 @@ export async function createCar(req, res, next) {
     }
     try {
         const [result] = await conn.query(
-            'INSERT INTO cars (brand, model, year, mileage, price, description) VALUES (?, ?, ?, ?, ?, ?)',
-            [brand, model, year, mileage, price, description]
+            'INSERT INTO cars (brand, model, year, mileage, price, description, uploader_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [brand, model, year, mileage, price, description, req.user.id]
         );
         res.status(201).json({ message: 'Car created successfully', carId: result.insertId });
+    } catch (err) {
+        next(err);
+    } finally {
+        conn.release();
+    }
+}
+
+export async function deleteCar(req, res, next) {
+    const conn = await pool.getConnection();
+    const carId = req.params.id;
+    try {
+        const [result] = await conn.query(
+            'DELETE FROM cars WHERE id = ?',
+            [carId]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+        res.status(200).json({ message: 'Car deleted successfully' });
+    } catch (err) {
+        next(err);
+    } finally {
+        conn.release();
+    }
+}
+
+export async function updateCar(req, res, next) {
+    const conn = await pool.getConnection();
+    const carId = req.params.id;
+    const { brand, model, year, mileage, price, description } = req.body;
+    try {
+        const [result] = await conn.query(
+            'UPDATE cars SET brand = ?, model = ?, year = ?, mileage = ?, price = ?, description = ? WHERE id = ?',
+            [brand, model, year, mileage, price, description, carId]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+        res.status(200).json({ message: 'Car updated successfully' });
     } catch (err) {
         next(err);
     } finally {

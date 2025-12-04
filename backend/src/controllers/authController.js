@@ -29,8 +29,8 @@ export async function regUser(req, res, next) {
         }
         const hashedPass = await argon.hash(password);
         const [result] = await conn.query(
-            'INSERT INTO users (username, password, email, address, phone) VALUES (?, ?, ?, ?, ?)',
-            [username, hashedPass, email, address, phone]
+            'INSERT INTO users (username, password, email, address, phone, rights) VALUES (?, ?, ?, ?, ?, ?)',
+            [username, hashedPass, email, address, phone, 0]
         );
         res.status(201).json({ message: 'User registered successfully', userId: result.insertId });
     }
