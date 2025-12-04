@@ -42,7 +42,7 @@ export async function logUser(req, res, next) {
             [email]
         );
         if (rows.length > 0 && await argon.verify(rows[0].password, password)) {
-            res.status(200).json({ message: 'Login successful', user: rows[0] });
+            res.status(200).json({ message: 'Login successful', user: rows[0].username });
         }
         else {
             res.status(401).json({ message: 'Invalid credentials' });
