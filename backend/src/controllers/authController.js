@@ -17,11 +17,11 @@ export async function regUser(req, res, next) {
     }
     try {
         const [existingUser] = await pool.query(
-            'SELECT * FROM users WHERE email = ?',
-            [email]
+            'SELECT * FROM users WHERE email = ? OR username = ?',
+            [email, username]
         );
         if (existingUser.length > 0) {
-            return res.status(409).json({ message: 'Email already exists' });
+            return res.status(409).json({ message: 'Email or username already exists' });
         }
         const hashedPass = await argon.hash(password);
         const [result] = await pool.query(
