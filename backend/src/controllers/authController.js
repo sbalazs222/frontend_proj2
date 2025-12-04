@@ -57,3 +57,11 @@ export async function logUser(req, res, next) {
         next(error);
     }
 }
+export function logoutUser(req, res, next) {
+    try {
+        res.clearCookie('token');
+        res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        next(error);
+    }
+}

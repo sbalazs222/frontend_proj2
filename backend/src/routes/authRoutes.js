@@ -1,7 +1,7 @@
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 import {validateFieldCount, validateRequiredFields} from 'psgutil'
-import { logUser, regUser } from '../controllers/authController.js'
+import { logUser, regUser, logoutUser } from '../controllers/authController.js'
 
 const limiter = rateLimit({
     windowMs: 60 * 1000,
@@ -11,7 +11,18 @@ const limiter = rateLimit({
 
 const router = express.Router()
 
-router.post('/login', limiter, validateFieldCount(2), validateRequiredFields(['email', 'password']), logUser)
-router.post('/register', validateFieldCount(5), validateRequiredFields(['email', 'password', 'username', 'address', 'phone']), regUser)
+router.post('/login', 
+    limiter, 
+    validateFieldCount(2), 
+    validateRequiredFields(['email', 'password']), 
+    logUser);
+
+router.post('/register', 
+    validateFieldCount(5), 
+    validateRequiredFields(['email', 'password', 'username', 'address', 'phone']), 
+    regUser);
+
+router.post('/logout', 
+    logoutUser);
 
 export default router
