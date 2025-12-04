@@ -80,3 +80,22 @@ export async function changeUserPassword(req, res, next) {
         conn.release();
     }
 }
+
+export async function deleteUserAccount(req, res, next) {
+    const conn = await pool.getConnection();
+    const userId = req.user.id;
+    try {
+        const [result] = await conn.query(
+            'DELETE FROM users WHERE id = ?',
+            [userId]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User account deleted successfully' });
+    } catch (err) {
+        next(err);
+    } finally {
+        conn.release();
+    }
+}

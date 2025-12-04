@@ -2,7 +2,7 @@ import express from 'express';
 import { authenticateToken } from '../middlewares/auth.js';
 import { validateFieldCount, validateRequiredFields } from 'psgutil';
 
-import { getUserProfile, updateUserProfile } from '../controllers/userController.js';
+import { getUserProfile, updateUserProfile, deleteUserAccount } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -15,6 +15,10 @@ router.put('/profile',
     validateFieldCount(4),
     validateRequiredFields(['username', 'email', 'address', 'phone']),
     updateUserProfile
+);
+router.delete('/profile',
+    authenticateToken,
+    deleteUserAccount
 );
 
 export default router;
