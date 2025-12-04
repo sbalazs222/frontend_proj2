@@ -4,6 +4,8 @@ import rateLimit from 'express-rate-limit'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
+import { specs, swaggerUi} from './utils/swagger.js'
+
 import authRoutes from './src/routes/authRoutes.js'
 import userRoutes from './src/routes/userRoutes.js'
 import carRoutes from './src/routes/carRoutes.js'
@@ -26,6 +28,7 @@ app.use(limiter)
 app.use(cookieParser())
 
 // Routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/', carRoutes)
