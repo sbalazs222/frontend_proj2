@@ -32,5 +32,3 @@ export function isLoggedIn(req, res, next) {
         return res.status(200).json({ loggedIn: false });
     }
 }
-
-export {authenticateToken, generateToken, isLoggedIn};

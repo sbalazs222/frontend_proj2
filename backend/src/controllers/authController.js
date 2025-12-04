@@ -1,6 +1,9 @@
 import pool from '../config/dbConifg.js';
 import argon from 'argon2';
 import validate from 'psgutil';
+
+import { generateToken } from '../middlewares/auth.js';
+
 export async function regUser(req, res, next) {
     const { username, password, email, address, phone } = req.body;
     if (!validate('username', username)) {
@@ -42,6 +45,8 @@ export async function logUser(req, res, next) {
             [email]
         );
         if (rows.length > 0 && await argon.verify(rows[0].password, password)) {
+            const token = generateToken(rows[0]);
+            res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'strict' });
             res.status(200).json({ message: 'Login successful', user: rows[0].username });
         }
         else {

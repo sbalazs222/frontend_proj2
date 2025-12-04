@@ -2,8 +2,10 @@ import express from 'express'
 import {colorLog, errorLog} from 'psgutil'
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 import authRoutes from './src/routes/authRoutes.js'
+import userRoutes from './src/routes/userRoutes.js'
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -20,10 +22,13 @@ app.use(cors({
 }))
 app.use(colorLog)
 app.use(limiter)
-
+app.use(cookieParser())
 
 // Routes
 app.use('/auth', authRoutes)
+app.use('/user', userRoutes)
+
+// Root endpoint
 
 app.get('/', (req, res) => {
     res.send('root endpoint')
