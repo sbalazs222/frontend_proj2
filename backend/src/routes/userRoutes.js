@@ -2,13 +2,14 @@ import express from 'express';
 import { authenticateToken } from '../middlewares/auth.js';
 import { validateFieldCount, validateRequiredFields } from 'psgutil';
 
-import { getUserProfile, updateUserProfile, deleteUserAccount } from '../controllers/userController.js';
+import { getUserProfile, updateUserProfile, deleteUserAccount, changeUserPassword } from '../controllers/userController.js';
 
 const router = express.Router();
 
 router.get('/profile', 
     authenticateToken, 
-    getUserProfile);
+    getUserProfile
+);
 
 router.put('/profile',
     authenticateToken,
@@ -16,6 +17,14 @@ router.put('/profile',
     validateRequiredFields(['username', 'email', 'address', 'phone']),
     updateUserProfile
 );
+
+router.put('/profile/password',
+    authenticateToken,
+    validateFieldCount(2),
+    validateRequiredFields(['currentPassword', 'newPassword']),
+    changeUserPassword
+);
+
 router.delete('/profile',
     authenticateToken,
     deleteUserAccount

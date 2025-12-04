@@ -15,14 +15,17 @@ router.post('/login',
     limiter, 
     validateFieldCount(2), 
     validateRequiredFields(['email', 'password']), 
-    logUser);
+    logUser
+);
 
 router.post('/register', 
     validateFieldCount(5), 
     validateRequiredFields(['email', 'password', 'username', 'address', 'phone']), 
-    regUser);
+    regUser
+);
 
 router.post('/logout', 
-    logoutUser);
+    logoutUser
+);
 
 export default router

@@ -40,6 +40,7 @@ export async function regUser(req, res, next) {
         conn.release();
     }
 }
+
 export async function logUser(req, res, next) {
     if (req.cookies['token']) {
         return res.status(200).json({ message: 'Already logged in' });
@@ -66,6 +67,7 @@ export async function logUser(req, res, next) {
         conn.release();
     }
 }
+
 export function logoutUser(req, res, next) {
     try {
         res.clearCookie('token');
