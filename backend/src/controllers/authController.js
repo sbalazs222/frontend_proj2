@@ -41,6 +41,9 @@ export async function regUser(req, res, next) {
     }
 }
 export async function logUser(req, res, next) {
+    if (req.cookies['token']) {
+        return res.status(200).json({ message: 'Already logged in' });
+    }
     const conn = await pool.getConnection();
     const { email, password } = req.body;
     try {
