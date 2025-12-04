@@ -12,3 +12,4 @@ export async function regUser(req, res, next) {
         next(error);
     }
 }
+export async function logUser(req, res, next) {}
