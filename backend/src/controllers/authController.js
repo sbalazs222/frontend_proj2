@@ -16,6 +16,13 @@ export async function regUser(req, res, next) {
         return res.status(400).json({ message: 'Password must contain lower-upper case letters, number, symbol and it must be 8 characters long' });
     }
     try {
+        const [existingUser] = await pool.query(
+            'SELECT * FROM users WHERE email = ?',
+            [email]
+        );
+        if (existingUser.length > 0) {
+            return res.status(409).json({ message: 'Email already exists' });
+        }
         const hashedPass = await argon.hash(password);
         const [result] = await pool.query(
             'INSERT INTO users (username, password, email, address, phone) VALUES (?, ?, ?, ?, ?)',
