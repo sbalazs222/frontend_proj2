@@ -7,7 +7,7 @@ function Login({setIsLoggenIn}){
     const[formData,setFormData] = useState({
         password:"",
         email:""
-    })
+    });
 
     const handleSubmit = async (e) =>{
         e.preventdefault();
@@ -30,7 +30,7 @@ function Login({setIsLoggenIn}){
             ...formData,
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     return(
         <>

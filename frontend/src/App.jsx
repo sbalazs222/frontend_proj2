@@ -1,5 +1,6 @@
 import './App.css'
 import { BrowserRouter, Route, Routes, NavLink } from "react-router-dom"
+import { useState } from 'react';
 import Home from './pages/Home';
 import Cars from './pages/Cars';
 import Login from './pages/Login';
@@ -7,22 +8,38 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  }
+
   return (
     <>
       <BrowserRouter>
-        <NavLink to="/">Home</NavLink> {" | "}
-        <NavLink to="/Cars">Autók</NavLink> {" | "}
-        <NavLink to="/Profile">Profil</NavLink> {" | "}
-        <NavLink to="/Login">Bejelentkezés</NavLink> {" | "}
-        <NavLink to="/Register">Regisztráció</NavLink>
-        
-
+        <nav>
+          {isLoggedIn ? (
+            <>
+              <NavLink to="/Profile">Profil</NavLink> {" | "}
+              <NavLink to="/">Home</NavLink> {" | "}
+              <NavLink to="/Cars">Autók</NavLink> {" | "}
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <>
+              <NavLink to="/">Home</NavLink> {" | "}
+              <NavLink to="/Cars">Autók</NavLink> {" | "}
+              <NavLink to="/Login">Bejelentkezés</NavLink> {" | "}
+              <NavLink to="/Register">Regisztráció</NavLink>
+            </>
+          )}
+        </nav>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/Cars' element={<Cars />} />
           <Route path='/Login' element={<Login />} />
           <Route path='/Register' element={<Register />} />
-          <Route path='/Profile' element={<Profile />} />
+          <Route path='/Profile' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         </Routes>
       </BrowserRouter>
     </>
