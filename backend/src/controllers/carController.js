@@ -1,4 +1,6 @@
 import pool from "../config/dbConifg.js";
+import { VALIDATION } from '../utils/constants.js';
+import { successResponse, errorResponse } from '../utils/response.js';
 
 export async function getCars(req, res, next) {
     const conn = await pool.getConnection();
@@ -6,7 +8,7 @@ export async function getCars(req, res, next) {
         const [rows] = await conn.query(
             'SELECT * FROM cars'
         );
-        res.status(200).json(rows);
+        return successResponse(res, 200, 'Cars retrieved successfully', rows);
     } catch (err) {
         next(err);
     } finally {
@@ -23,9 +25,9 @@ export async function getCarById(req, res, next) {
             [carId]
         );
         if (rows.length === 0) {
-            return res.status(404).json({ message: 'Car not found' });
+            return errorResponse(res, 404, 'Car not found');
         }
-        res.status(200).json(rows[0]);
+        return successResponse(res, 200, 'Car retrieved successfully', rows[0]);
     } catch (err) {
         next(err);
     } finally {
@@ -34,23 +36,23 @@ export async function getCarById(req, res, next) {
 }
 
 export async function createCar(req, res, next) {
-    const conn = await pool.getConnection();
     const { brand, model, year, mileage, price, description } = req.body;
-    if (typeof year !== 'number' || year < 1886 || year > new Date().getFullYear() + 1) {
-        return res.status(400).json({ message: 'Invalid year value' });
+    if (typeof year !== 'number' || year < VALIDATION.MIN_YEAR || year > VALIDATION.MAX_YEAR) {
+        return errorResponse(res, 400, `Year must be between ${VALIDATION.MIN_YEAR} and ${VALIDATION.MAX_YEAR}`);
     }
-    if (typeof price !== 'number' || price < 0) {
-        return res.status(400).json({ message: 'Invalid price value' });
+    if (typeof price !== 'number' || price < VALIDATION.MIN_PRICE) {
+        return errorResponse(res, 400, 'Invalid price value');
     }
-    if (typeof mileage !== 'number' || mileage < 0) {
-        return res.status(400).json({ message: 'Invalid mileage value' });
+    if (typeof mileage !== 'number' || mileage < VALIDATION.MIN_MILEAGE) {
+        return errorResponse(res, 400, 'Invalid mileage value');
     }
+    const conn = await pool.getConnection();
     try {
         const [result] = await conn.query(
             'INSERT INTO cars (brand, model, year, mileage, price, description, uploader_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [brand, model, year, mileage, price, description, req.user.id]
         );
-        res.status(201).json({ message: 'Car created successfully', carId: result.insertId });
+        return successResponse(res, 201, 'Car created successfully', { carId: result.insertId });
     } catch (err) {
         next(err);
     } finally {
@@ -67,9 +69,9 @@ export async function deleteCar(req, res, next) {
             [carId]
         );
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Car not found' });
+            return errorResponse(res, 404, 'Car not found');
         }
-        res.status(200).json({ message: 'Car deleted successfully' });
+        return successResponse(res, 200, 'Car deleted successfully');
     } catch (err) {
         next(err);
     } finally {
@@ -78,18 +80,27 @@ export async function deleteCar(req, res, next) {
 }
 
 export async function updateCar(req, res, next) {
-    const conn = await pool.getConnection();
     const carId = req.params.id;
     const { brand, model, year, mileage, price, description } = req.body;
+    if (typeof year !== 'number' || year < VALIDATION.MIN_YEAR || year > VALIDATION.MAX_YEAR) {
+        return errorResponse(res, 400, `Year must be between ${VALIDATION.MIN_YEAR} and ${VALIDATION.MAX_YEAR}`);
+    }
+    if (typeof price !== 'number' || price < VALIDATION.MIN_PRICE) {
+        return errorResponse(res, 400, 'Invalid price value');
+    }
+    if (typeof mileage !== 'number' || mileage < VALIDATION.MIN_MILEAGE) {
+        return errorResponse(res, 400, 'Invalid mileage value');
+    }
+    const conn = await pool.getConnection();
     try {
         const [result] = await conn.query(
             'UPDATE cars SET brand = ?, model = ?, year = ?, mileage = ?, price = ?, description = ? WHERE id = ?',
             [brand, model, year, mileage, price, description, carId]
         );
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Car not found' });
+            return errorResponse(res, 404, 'Car not found');
         }
-        res.status(200).json({ message: 'Car updated successfully' });
+        return successResponse(res, 200, 'Car updated successfully');
     } catch (err) {
         next(err);
     } finally {

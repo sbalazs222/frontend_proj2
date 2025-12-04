@@ -2,10 +2,11 @@ import express from 'express'
 import rateLimit from 'express-rate-limit'
 import {validateFieldCount, validateRequiredFields} from 'psgutil'
 import { logUser, regUser, logoutUser } from '../controllers/authController.js'
+import { RATE_LIMITS } from '../utils/constants.js'
 
 const limiter = rateLimit({
-    windowMs: 60 * 1000,
-    max: 3,
+    windowMs: RATE_LIMITS.AUTH.WINDOW_MS,
+    max: RATE_LIMITS.AUTH.MAX_REQUESTS,
     message: "Too many requests from this IP, please try again later."
 })
 

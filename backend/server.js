@@ -3,22 +3,25 @@ import {colorLog, errorLog} from 'psgutil'
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import { sanitizeInputs } from './src/middlewares/sanitize.js'
+import { RATE_LIMITS } from './src/utils/constants.js'
 
-import { specs, swaggerUi} from './utils/swagger.js'
+import { specs, swaggerUi} from './src/utils/swagger.js'
 
 import authRoutes from './src/routes/authRoutes.js'
 import userRoutes from './src/routes/userRoutes.js'
 import carRoutes from './src/routes/carRoutes.js'
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
+    windowMs: RATE_LIMITS.GLOBAL.WINDOW_MS,
+    max: RATE_LIMITS.GLOBAL.MAX_REQUESTS,
     message: "Too many requests from this IP, please try again later."
 })
 const app = express()
 
 // Middleware
-app.use(express.json())
+app.use(express.json({ limit: '10kb' }))
+app.use(sanitizeInputs)
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173'
@@ -33,14 +36,13 @@ app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/', carRoutes)
 
-// Root endpoint
-
 app.get('/', (req, res) => {
     res.send('root endpoint')
 })
 
+app.use(errorLog)
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000')
+    console.log('Swagger docs available at http://localhost:3000/api-docs')
 })
-
-app.use(errorLog)
