@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 
 import authRoutes from './src/routes/authRoutes.js'
 import userRoutes from './src/routes/userRoutes.js'
+import carRoutes from './src/routes/carRoutes.js'
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -27,6 +28,7 @@ app.use(cookieParser())
 // Routes
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
+app.use('/', carRoutes)
 
 // Root endpoint
 
