@@ -3,13 +3,16 @@ import {colorLog, errorLog} from 'psgutil'
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
 
+import authRoutes from './src/routes/authRoutes.js'
+
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
     message: "Too many requests from this IP, please try again later."
 })
-
 const app = express()
+
+// Middleware
 app.use(express.json())
 app.use(cors({
     credentials: true,
@@ -18,12 +21,16 @@ app.use(cors({
 app.use(colorLog)
 app.use(limiter)
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000')
-})
+
+// Routes
+app.use('/auth', authRoutes)
 
 app.get('/', (req, res) => {
     res.send('root endpoint')
+})
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000')
 })
 
 app.use(errorLog)

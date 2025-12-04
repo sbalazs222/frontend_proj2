@@ -13,3 +13,5 @@ const router = express.Router()
 
 router.post('/login', limiter, validateFieldCount(2), validateRequiredFields(['email', 'password']), logUser)
 router.post('/register', validateFieldCount(5), validateRequiredFields(['email', 'password', 'username', 'address', 'phone']), regUser)
+
+export default router

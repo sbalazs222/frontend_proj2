@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise';
-import { dbConfig } from './envConfig';
+import { dbConfig } from './envConfig.js';
 
-export const pool = mysql.createPool(dbConfig);
+const pool = mysql.createPool(dbConfig);
+export default pool;

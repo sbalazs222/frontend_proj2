@@ -1,5 +1,5 @@
 import pool from '../config/dbConifg.js';
-import argon from argon2;
+import argon from 'argon2';
 import validate from 'psgutil';
 export async function regUser(req, res, next) {
     const { username, password, email, address, phone } = req.body;

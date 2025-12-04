@@ -13,3 +13,4 @@ CREATE TABLE IF NOT EXISTS cars(
     mileage int not null,
     description varchar(255)
 );
+INSERT INTO users(username, password, email, address, phone) values ('admin', '$argon2i$v=19$m=16,t=2,p=1$RWlCSHZtWGxCanpldjY0Tg$s/Jwk2d09S1JRC8KJv7FVQ', 'admin@admin.com', 'Admin St. 1', '+362012345678');
