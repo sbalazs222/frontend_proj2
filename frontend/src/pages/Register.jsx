@@ -32,6 +32,7 @@ function Register(){
             [e.target.name]:e.target.value
         })
     }
+    
     return(
         <>
         <h1>Regisztráció</h1>
