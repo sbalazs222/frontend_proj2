@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+
 function Register(){
     const navigate = useNavigate();
 
@@ -39,9 +42,10 @@ function Register(){
 
         <form onSubmit={handleSubmit}>
             <input type="text" placeholder="Name" onChange={handleChange} required></input>
-            <input type="email" placeholder="Email"required></input>
-            <input type="text" placeholder="Address" required></input>
-            <input type="text" placeholder="+36 70 123 4567"></input>
+            <input type="text" placeholder="Password" onChange={handleChange} required></input>
+            <input type="email" placeholder="Email" onChange={handleChange} required></input>
+            <input type="text" placeholder="Address" onChange={handleChange} required></input>
+            <input type="text" placeholder="+36 70 123 4567" onChange={handleChange} required></input>
             <button>Regisztráció</button>
         </form>
         </>
