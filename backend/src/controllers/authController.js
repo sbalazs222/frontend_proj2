@@ -5,6 +5,7 @@ import validate from 'psgutil';
 import { generateToken } from '../middlewares/auth.js';
 
 export async function regUser(req, res, next) {
+    const conn = await pool.getConnection();
     const { username, password, email, address, phone } = req.body;
     if (!validate('username', username)) {
         return res.status(400).json({ message: 'Invalid username format' });
@@ -19,7 +20,7 @@ export async function regUser(req, res, next) {
         return res.status(400).json({ message: 'Password must contain lower-upper case letters, number, symbol and it must be 8 characters long' });
     }
     try {
-        const [existingUser] = await pool.query(
+        const [existingUser] = await conn.query(
             'SELECT * FROM users WHERE email = ? OR username = ?',
             [email, username]
         );
@@ -27,7 +28,7 @@ export async function regUser(req, res, next) {
             return res.status(409).json({ message: 'Email or username already exists' });
         }
         const hashedPass = await argon.hash(password);
-        const [result] = await pool.query(
+        const [result] = await conn.query(
             'INSERT INTO users (username, password, email, address, phone) VALUES (?, ?, ?, ?, ?)',
             [username, hashedPass, email, address, phone]
         );
@@ -35,12 +36,15 @@ export async function regUser(req, res, next) {
     }
     catch (error) {
         next(error);
+    } finally {
+        conn.release();
     }
 }
 export async function logUser(req, res, next) {
+    const conn = await pool.getConnection();
     const { email, password } = req.body;
     try {
-        const [rows] = await pool.query(
+        const [rows] = await conn.query(
             'SELECT * FROM users WHERE email = ?',
             [email]
         );
@@ -55,6 +59,8 @@ export async function logUser(req, res, next) {
     }
     catch (error) {
         next(error);
+    } finally {
+        conn.release();
     }
 }
 export function logoutUser(req, res, next) {
