@@ -20,26 +20,49 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   brand:
- *                     type: string
- *                   model:
- *                     type: string
- *                   year:
- *                     type: integer
- *                   mileage:
- *                     type: number
- *                   price:
- *                     type: number
- *                   description:
- *                     type: string
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Cars retrieved successfully
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       brand:
+ *                         type: string
+ *                       model:
+ *                         type: string
+ *                       year:
+ *                         type: integer
+ *                       mileage:
+ *                         type: number
+ *                       price:
+ *                         type: number
+ *                       description:
+ *                         type: string
  *       401:
  *         description: Unauthorized - Invalid or missing token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.get('/cars',
     authenticateToken,
@@ -69,24 +92,61 @@ router.get('/cars',
  *             schema:
  *               type: object
  *               properties:
- *                 id:
- *                   type: integer
- *                 brand:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
  *                   type: string
- *                 model:
- *                   type: string
- *                 year:
- *                   type: integer
- *                 mileage:
- *                   type: number
- *                 price:
- *                   type: number
- *                 description:
- *                   type: string
+ *                   example: Car retrieved successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                     brand:
+ *                       type: string
+ *                     model:
+ *                       type: string
+ *                     year:
+ *                       type: integer
+ *                     mileage:
+ *                       type: number
+ *                     price:
+ *                       type: number
+ *                     description:
+ *                       type: string
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       404:
  *         description: Car not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Car not found
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.get('/cars/:id',
     authenticateToken,
@@ -136,10 +196,55 @@ router.get('/cars/:id',
  *     responses:
  *       201:
  *         description: Car created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Car created successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     carId:
+ *                       type: integer
+ *                       example: 1
  *       400:
  *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Invalid price value
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.post('/cars',
     authenticateToken,
@@ -198,14 +303,84 @@ router.post('/cars',
  *     responses:
  *       200:
  *         description: Car updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Car updated successfully
+ *                 data:
+ *                   type: object
+ *                   nullable: true
  *       400:
  *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Invalid price value
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       403:
  *         description: Forbidden - Insufficient permissions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Forbidden
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       404:
  *         description: Car not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Car not found
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.put('/cars/:id',
     authenticateToken,
@@ -233,12 +408,68 @@ router.put('/cars/:id',
  *     responses:
  *       200:
  *         description: Car deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Car deleted successfully
+ *                 data:
+ *                   type: object
+ *                   nullable: true
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       403:
  *         description: Forbidden - Insufficient permissions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Forbidden
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       404:
  *         description: Car not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Car not found
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.delete('/cars/:id',
     authenticateToken,
