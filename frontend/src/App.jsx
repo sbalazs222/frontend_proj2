@@ -10,8 +10,13 @@ import Profile from './pages/Profile';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsLoggedIn(false);
+    const res = await fetch('http://localhost:3000/auth/logout',{
+      credentials: 'include',
+      method: 'POST'
+    })
+    console.log(await res.json())
   }
 
   return (
