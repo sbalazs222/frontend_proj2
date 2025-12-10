@@ -1,6 +1,17 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Validate required environment variables
+const requiredEnvVars = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'JWT_SECRET'];
+
+for (const varName of requiredEnvVars) {
+    if (!process.env[varName]) {
+        console.error(`Missing required environment variable: ${varName}`);
+        process.exit(1);
+    }
+}
+
+// Export configurations
 export const dbConfig = {
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
@@ -8,4 +19,5 @@ export const dbConfig = {
     password: process.env.DB_PASSWORD
 }
 
+// Export JWT secret
 export const JWT_SECRET = process.env.JWT_SECRET;
