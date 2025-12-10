@@ -22,18 +22,39 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 username:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
  *                   type: string
- *                 email:
- *                   type: string
- *                 address:
- *                   type: string
- *                 phone:
- *                   type: string
- *                 rights:
- *                   type: integer
+ *                   example: Profile retrieved successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     username:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     address:
+ *                       type: string
+ *                     phone:
+ *                       type: string
  *       401:
  *         description: Unauthorized - Invalid or missing token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.get('/profile', 
     authenticateToken, 
@@ -75,12 +96,68 @@ router.get('/profile',
  *     responses:
  *       200:
  *         description: Profile updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Profile updated successfully
+ *                 data:
+ *                   type: object
+ *                   nullable: true
  *       400:
  *         description: Invalid input format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Invalid email format
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       409:
  *         description: Email or username already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Email or username already exists
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.put('/profile',
     authenticateToken,
@@ -119,10 +196,52 @@ router.put('/profile',
  *     responses:
  *       200:
  *         description: Password changed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Password changed successfully
+ *                 data:
+ *                   type: object
+ *                   nullable: true
  *       400:
  *         description: Invalid password format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: New password must contain lower-upper case letters, number, symbol and it must be 8 characters long
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       401:
  *         description: Unauthorized or incorrect current password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Current password is incorrect
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.put('/profile/password',
     authenticateToken,
@@ -142,10 +261,52 @@ router.put('/profile/password',
  *     responses:
  *       200:
  *         description: Account deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Account deleted successfully
+ *                 data:
+ *                   type: object
+ *                   nullable: true
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       500:
  *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Server error
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.delete('/profile',
     authenticateToken,
