@@ -1,0 +1,53 @@
+.urlap_log {
+    max-width: 360px;
+    margin: 40px auto;               /* középre, kicsit fentebb */
+    padding: 24px;
+    background-color: white; /* áttetsző fehér háttér */
+    border-radius: 16px;             /* lekerekített sarkok */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);  /* finom árnyék */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .urlap_log h1 {
+    text-align: center;
+    color: #4a2b00;
+    margin-bottom: 24px;
+  }
+  
+  .urlap_log form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .urlap_log input[type="email"],
+  .urlap_log input[type="password"] {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 2px solid #ff7a00;
+    border-radius: 8px;
+    transition: border-color 0.25s ease;
+    outline: none;
+  }
+  
+  .urlap_log input[type="email"]:focus,
+  .urlap_log input[type="password"]:focus {
+    border-color: #ff9d5a;
+    box-shadow: 0 0 6px #ff9d5a;
+  }
+  
+  .urlap_log button {
+    padding: 12px 16px;
+    background-color: #ff7a00;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+  
+  .urlap_log button:hover {
+    background-color: #ff9d5a;
+  }

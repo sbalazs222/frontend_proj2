@@ -1,26 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import "../Login.css"
 
-function Login({setIsLoggenIn}){
+function Login({ setIsLoggedIn }) {
     const navigate = useNavigate();
 
-    const[formData,setFormData] = useState({
-        password:"",
-        email:""
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
     });
 
-    const handleSubmit = async (e) =>{
-        e.preventdefault();
-        const res = await fetch("http://localhost:3000/login",{
-            method:"POST",
-            headers: { "Content-Type": "application/json"},
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const res = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
         });
         const data = await res.json();
+        console.log(data)
 
-        if(res.ok) {
+        if (res.ok) {
             alert("Sikeres Bejelentkezés!")
-            setIsLoggenIn(true)
+            setIsLoggedIn(true)
             navigate('/')
         }
     };
@@ -32,14 +35,17 @@ function Login({setIsLoggenIn}){
         })
     };
 
-    return(
+    return (
         <>
-        <h1>Bejelentkezés</h1>
-        <form onSubmit={handleSubmit}>
-            <input type="email" placeholder="Email" onChange={handleChange} required></input>
-            <input type="password" placeholder="Password" onChange={handleChange} required></input>
-            <button>Bejelentkezés</button>
-        </form>
+            <div class="urlap_log">
+                <h1>Bejelentkezés</h1>
+                <form onSubmit={handleSubmit}>
+                    <input type="email" placeholder="Email" name="email" onChange={handleChange} required></input>
+                    <input type="password" placeholder="Password" name="password" onChange={handleChange} required></input>
+                    <button>Bejelentkezés</button>
+                </form>
+            </div>
+
         </>
     );
 }

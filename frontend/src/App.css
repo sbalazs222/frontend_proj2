@@ -1,3 +1,92 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #F9F6EE;
+}
+
+/* ----- NAVBAR WRAPPER ----- */
+.navbar-wrapper {
+  width: 100%;
+  background-color: #ff7a00; /* KONTRASZTOS NARANCS */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+  display: flex;
+  justify-content: center;
+}
+
+/* ----- NAVBAR ----- */
+nav {
+  max-width: 1100px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 12px 20px;
+  align-items: center;
+}
+
+/* Linkek */
+nav a {
+  text-decoration: none;
+  color: #fff; 
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+/* Hover */
+nav a:hover {
+  background-color: #ffa34b; /* világosabb narancs hover */
+  color: #4a2b00;
+}
+
+/* Active link */
+nav .active {
+  background-color: #ffa34b;
+}
+
+/* Logout gomb */
+nav button {
+  background-color: #ff4d00;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: bold;
+}
+
+nav button:hover {
+  background-color: #ff7a3b;
+}
+
+/* Tartalom (navbar alatt legyen hely) */
+.content {
+  margin-top: 80px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Fejlécek */
+h1 {
+  text-align: center;
+  color: #4a2b00;
+}
+
+
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

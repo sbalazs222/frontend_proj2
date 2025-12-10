@@ -15,34 +15,37 @@ function App() {
   }
 
   return (
-    <>
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="navbar-wrapper">
         <nav>
           {isLoggedIn ? (
             <>
-              <NavLink to="/Profile">Profil</NavLink> {" | "}
-              <NavLink to="/">Home</NavLink> {" | "}
-              <NavLink to="/Cars">Autók</NavLink> {" | "}
+              <NavLink to="/Profile">Profil</NavLink>
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/Cars">Autók</NavLink>
               <button onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <>
-              <NavLink to="/">Home</NavLink> {" | "}
-              <NavLink to="/Cars">Autók</NavLink> {" | "}
-              <NavLink to="/Login">Bejelentkezés</NavLink> {" | "}
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/Cars">Autók</NavLink>
+              <NavLink to="/Login">Bejelentkezés</NavLink>
               <NavLink to="/Register">Regisztráció</NavLink>
             </>
           )}
         </nav>
+      </div>
+
+      <div className="content">
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/Cars' element={<Cars />} />
-          <Route path='/Login' element={<Login />} />
+          <Route path='/Login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
           <Route path='/Register' element={<Register />} />
-          <Route path='/Profile' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path='/Profile' element={<Profile />} />
         </Routes>
-      </BrowserRouter>
-    </>
+      </div>
+    </BrowserRouter>
   )
 }
 
