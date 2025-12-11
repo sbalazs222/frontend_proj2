@@ -44,14 +44,34 @@ const router = express.Router()
  *             schema:
  *               type: object
  *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *                 message:
  *                   type: string
  *                   example: Login successful
- *                 user:
- *                   type: string
- *                   example: johndoe
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user:
+ *                       type: string
+ *                       example: johndoe
  *       401:
  *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Invalid credentials
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       429:
  *         description: Too many requests - Rate limit exceeded
  */
@@ -107,16 +127,50 @@ router.post('/login',
  *             schema:
  *               type: object
  *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *                 message:
  *                   type: string
  *                   example: User registered successfully
- *                 userId:
- *                   type: integer
- *                   example: 1
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     userId:
+ *                       type: integer
+ *                       example: 1
  *       400:
  *         description: Invalid input format (username, email, phone, or password)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Invalid email format
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  *       409:
  *         description: Email or username already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Email or username already exists
+ *                 errors:
+ *                   type: object
+ *                   nullable: true
  */
 router.post('/register', 
     validateFieldCount(5), 
@@ -138,9 +192,15 @@ router.post('/register',
  *             schema:
  *               type: object
  *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *                 message:
  *                   type: string
  *                   example: Logout successful
+ *                 data:
+ *                   type: object
+ *                   nullable: true
  */
 router.post('/logout', 
     logoutUser

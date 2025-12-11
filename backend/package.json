@@ -19,7 +19,7 @@
     "express-rate-limit": "^8.2.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.15.3",
-    "psgutil": "^1.0.4",
+    "psgutil": "^1.0.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }

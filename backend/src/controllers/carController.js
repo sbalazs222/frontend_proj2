@@ -39,19 +39,36 @@ export async function getCarById(req, res, next) {
 }
 
 export async function createCar(req, res, next) {
-    const { brand, model, year, mileage, price, description } = req.body;
-    
+    var { brand, model, year, mileage, price, description } = req.body;
+
     // Validate car details
-    if (typeof year !== 'number' || year < VALIDATION.MIN_YEAR || year > VALIDATION.MAX_YEAR) {
-        return errorResponse(res, 400, `Year must be between ${VALIDATION.MIN_YEAR} and ${VALIDATION.MAX_YEAR}`);
+    if (typeof year !== 'number') {
+        year = parseInt(year);
+        if (isNaN(year)) {
+            return errorResponse(res, 400, 'Year must be a number');
+        }
+        if (year < VALIDATION.MIN_YEAR || year > VALIDATION.MAX_YEAR) {
+            return errorResponse(res, 400, `Year must be between ${VALIDATION.MIN_YEAR} and ${VALIDATION.MAX_YEAR}`);
+        }
     }
-    if (typeof price !== 'number' || price < VALIDATION.MIN_PRICE) {
-        return errorResponse(res, 400, 'Invalid price value');
+
+    if (typeof price !== 'number') {
+        price = parseInt(price);
+        if (isNaN(price)) {
+            return errorResponse(res, 400, 'Price must be a number');
+        }
+        if (price < VALIDATION.MIN_PRICE) {
+            return errorResponse(res, 400, `Price must be at least ${VALIDATION.MIN_PRICE}`);
+        }
     }
-    if (typeof mileage !== 'number' || mileage < VALIDATION.MIN_MILEAGE) {
-        return errorResponse(res, 400, 'Invalid mileage value');
+
+    if (typeof mileage !== 'number') {
+        mileage = parseInt(mileage);
+        if (isNaN(mileage) || mileage < VALIDATION.MIN_MILEAGE) {
+            return errorResponse(res, 400, 'Invalid mileage value');
+        }
     }
-    
+
     // Description validation
     if (!description || description.trim().length === 0) {
         return errorResponse(res, 400, 'Description cannot be empty');
@@ -59,7 +76,7 @@ export async function createCar(req, res, next) {
     if (description.length > 1000) {
         return errorResponse(res, 400, 'Description must be less than 1000 characters');
     }
-    
+
     const conn = await pool.getConnection();
     try {
         const [result] = await conn.query(
@@ -109,7 +126,7 @@ export async function updateCar(req, res, next) {
     if (typeof mileage !== 'number' || mileage < VALIDATION.MIN_MILEAGE) {
         return errorResponse(res, 400, 'Invalid mileage value');
     }
-    
+
     // Update car details in the database
     const conn = await pool.getConnection();
     try {
