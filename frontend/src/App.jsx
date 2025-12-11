@@ -6,7 +6,6 @@ import Cars from './pages/Cars';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -27,13 +26,12 @@ function App() {
             <>
               <NavLink to="/Profile">Profil</NavLink>
               <NavLink to="/">Home</NavLink>
-              <NavLink to="/Cars">Autók</NavLink>
+              <NavLink to="/Cars">Autó feltöltés</NavLink>
               <button onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <>
               <NavLink to="/">Home</NavLink>
-              <NavLink to="/Cars">Autók</NavLink>
               <NavLink to="/Login">Bejelentkezés</NavLink>
               <NavLink to="/Register">Regisztráció</NavLink>
             </>

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import '../Register.css'
 
@@ -48,6 +48,7 @@ function Register() {
                     <input type="text" placeholder="Address" onChange={handleChange} name="address" required></input>
                     <input type="text" placeholder="+36 70 123 4567" onChange={handleChange} name="phone" required></input>
                     <button>Regisztráció</button>
+                    <div>Van már fiókód? <Link to = "/Login">Jelentkezz be!</Link></div>
                 </form>
             </div>
         </>
