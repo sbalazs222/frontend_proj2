@@ -2,5 +2,5 @@
 ## Téma
 Használtautó kereskedői felület
 ## Csapattagok
-Mihalics Miron,
-Sánta Balázs
+Mihalics Miron - Frontend dev, UI - UX\
+Sánta Balázs - Backend dev
